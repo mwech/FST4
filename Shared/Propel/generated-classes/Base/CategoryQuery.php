@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCategoryQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
  * @method     ChildCategoryQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildCategoryQuery orderByCatActive($order = Criteria::ASC) Order by the cat_active column
  *
  * @method     ChildCategoryQuery groupByCategoryId() Group by the category_id column
  * @method     ChildCategoryQuery groupByDescription() Group by the description column
+ * @method     ChildCategoryQuery groupByCatActive() Group by the cat_active column
  *
  * @method     ChildCategoryQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildCategoryQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCategory findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCategory matching the query, or a new ChildCategory object populated from the query conditions when no match is found
  *
  * @method     ChildCategory findOneByCategoryId(string $category_id) Return the first ChildCategory filtered by the category_id column
- * @method     ChildCategory findOneByDescription(string $description) Return the first ChildCategory filtered by the description column *
+ * @method     ChildCategory findOneByDescription(string $description) Return the first ChildCategory filtered by the description column
+ * @method     ChildCategory findOneByCatActive(string $cat_active) Return the first ChildCategory filtered by the cat_active column *
 
  * @method     ChildCategory requirePk($key, ConnectionInterface $con = null) Return the ChildCategory by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCategory requireOne(ConnectionInterface $con = null) Return the first ChildCategory matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCategory requireOneByCategoryId(string $category_id) Return the first ChildCategory filtered by the category_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCategory requireOneByDescription(string $description) Return the first ChildCategory filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCategory requireOneByCatActive(string $cat_active) Return the first ChildCategory filtered by the cat_active column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCategory[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCategory objects based on current ModelCriteria
  * @method     ChildCategory[]|ObjectCollection findByCategoryId(string $category_id) Return ChildCategory objects filtered by the category_id column
  * @method     ChildCategory[]|ObjectCollection findByDescription(string $description) Return ChildCategory objects filtered by the description column
+ * @method     ChildCategory[]|ObjectCollection findByCatActive(string $cat_active) Return ChildCategory objects filtered by the cat_active column
  * @method     ChildCategory[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class CategoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT category_id, description FROM category WHERE category_id = :p0';
+        $sql = 'SELECT category_id, description, cat_active FROM category WHERE category_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -297,6 +302,31 @@ abstract class CategoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CategoryTableMap::COL_DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the cat_active column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCatActive('fooValue');   // WHERE cat_active = 'fooValue'
+     * $query->filterByCatActive('%fooValue%', Criteria::LIKE); // WHERE cat_active LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $catActive The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCategoryQuery The current query, for fluid interface
+     */
+    public function filterByCatActive($catActive = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($catActive)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CategoryTableMap::COL_CAT_ACTIVE, $catActive, $comparison);
     }
 
     /**

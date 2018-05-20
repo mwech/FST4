@@ -23,12 +23,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrderQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildOrderQuery orderByDate($order = Criteria::ASC) Order by the date column
  * @method     ChildOrderQuery orderByTotalAmount($order = Criteria::ASC) Order by the total_amount column
+ * @method     ChildOrderQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method     ChildOrderQuery orderByPersonId($order = Criteria::ASC) Order by the person_id column
  * @method     ChildOrderQuery orderByVoucherId($order = Criteria::ASC) Order by the voucher_id column
  *
  * @method     ChildOrderQuery groupByOrderId() Group by the order_id column
  * @method     ChildOrderQuery groupByDate() Group by the date column
  * @method     ChildOrderQuery groupByTotalAmount() Group by the total_amount column
+ * @method     ChildOrderQuery groupByStatus() Group by the status column
  * @method     ChildOrderQuery groupByPersonId() Group by the person_id column
  * @method     ChildOrderQuery groupByVoucherId() Group by the voucher_id column
  *
@@ -78,6 +80,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrder findOneByOrderId(string $order_id) Return the first ChildOrder filtered by the order_id column
  * @method     ChildOrder findOneByDate(string $date) Return the first ChildOrder filtered by the date column
  * @method     ChildOrder findOneByTotalAmount(double $total_amount) Return the first ChildOrder filtered by the total_amount column
+ * @method     ChildOrder findOneByStatus(string $status) Return the first ChildOrder filtered by the status column
  * @method     ChildOrder findOneByPersonId(string $person_id) Return the first ChildOrder filtered by the person_id column
  * @method     ChildOrder findOneByVoucherId(string $voucher_id) Return the first ChildOrder filtered by the voucher_id column *
 
@@ -87,6 +90,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrder requireOneByOrderId(string $order_id) Return the first ChildOrder filtered by the order_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrder requireOneByDate(string $date) Return the first ChildOrder filtered by the date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrder requireOneByTotalAmount(double $total_amount) Return the first ChildOrder filtered by the total_amount column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildOrder requireOneByStatus(string $status) Return the first ChildOrder filtered by the status column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrder requireOneByPersonId(string $person_id) Return the first ChildOrder filtered by the person_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrder requireOneByVoucherId(string $voucher_id) Return the first ChildOrder filtered by the voucher_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
@@ -94,6 +98,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrder[]|ObjectCollection findByOrderId(string $order_id) Return ChildOrder objects filtered by the order_id column
  * @method     ChildOrder[]|ObjectCollection findByDate(string $date) Return ChildOrder objects filtered by the date column
  * @method     ChildOrder[]|ObjectCollection findByTotalAmount(double $total_amount) Return ChildOrder objects filtered by the total_amount column
+ * @method     ChildOrder[]|ObjectCollection findByStatus(string $status) Return ChildOrder objects filtered by the status column
  * @method     ChildOrder[]|ObjectCollection findByPersonId(string $person_id) Return ChildOrder objects filtered by the person_id column
  * @method     ChildOrder[]|ObjectCollection findByVoucherId(string $voucher_id) Return ChildOrder objects filtered by the voucher_id column
  * @method     ChildOrder[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -194,7 +199,7 @@ abstract class OrderQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT order_id, date, total_amount, person_id, voucher_id FROM order WHERE order_id = :p0';
+        $sql = 'SELECT order_id, date, total_amount, status, person_id, voucher_id FROM order WHERE order_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -391,6 +396,31 @@ abstract class OrderQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderTableMap::COL_TOTAL_AMOUNT, $totalAmount, $comparison);
+    }
+
+    /**
+     * Filter the query on the status column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByStatus('fooValue');   // WHERE status = 'fooValue'
+     * $query->filterByStatus('%fooValue%', Criteria::LIKE); // WHERE status LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $status The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildOrderQuery The current query, for fluid interface
+     */
+    public function filterByStatus($status = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($status)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(OrderTableMap::COL_STATUS, $status, $comparison);
     }
 
     /**

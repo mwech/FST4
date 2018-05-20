@@ -25,6 +25,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPersonQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method     ChildPersonQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
  * @method     ChildPersonQuery orderByE-mail($order = Criteria::ASC) Order by the e-mail column
+ * @method     ChildPersonQuery orderByPhoneNumber($order = Criteria::ASC) Order by the phone_number column
  * @method     ChildPersonQuery orderByPassword($order = Criteria::ASC) Order by the password column
  * @method     ChildPersonQuery orderByBirthdate($order = Criteria::ASC) Order by the birthdate column
  * @method     ChildPersonQuery orderByStreet($order = Criteria::ASC) Order by the street column
@@ -36,6 +37,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPersonQuery groupByFirstname() Group by the firstname column
  * @method     ChildPersonQuery groupByLastname() Group by the lastname column
  * @method     ChildPersonQuery groupByE-mail() Group by the e-mail column
+ * @method     ChildPersonQuery groupByPhoneNumber() Group by the phone_number column
  * @method     ChildPersonQuery groupByPassword() Group by the password column
  * @method     ChildPersonQuery groupByBirthdate() Group by the birthdate column
  * @method     ChildPersonQuery groupByStreet() Group by the street column
@@ -110,6 +112,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPerson findOneByFirstname(string $firstname) Return the first ChildPerson filtered by the firstname column
  * @method     ChildPerson findOneByLastname(string $lastname) Return the first ChildPerson filtered by the lastname column
  * @method     ChildPerson findOneByE-mail(string $e-mail) Return the first ChildPerson filtered by the e-mail column
+ * @method     ChildPerson findOneByPhoneNumber(string $phone_number) Return the first ChildPerson filtered by the phone_number column
  * @method     ChildPerson findOneByPassword(string $password) Return the first ChildPerson filtered by the password column
  * @method     ChildPerson findOneByBirthdate(string $birthdate) Return the first ChildPerson filtered by the birthdate column
  * @method     ChildPerson findOneByStreet(string $street) Return the first ChildPerson filtered by the street column
@@ -124,6 +127,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPerson requireOneByFirstname(string $firstname) Return the first ChildPerson filtered by the firstname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPerson requireOneByLastname(string $lastname) Return the first ChildPerson filtered by the lastname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPerson requireOneByE-mail(string $e-mail) Return the first ChildPerson filtered by the e-mail column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPerson requireOneByPhoneNumber(string $phone_number) Return the first ChildPerson filtered by the phone_number column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPerson requireOneByPassword(string $password) Return the first ChildPerson filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPerson requireOneByBirthdate(string $birthdate) Return the first ChildPerson filtered by the birthdate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPerson requireOneByStreet(string $street) Return the first ChildPerson filtered by the street column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -136,6 +140,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPerson[]|ObjectCollection findByFirstname(string $firstname) Return ChildPerson objects filtered by the firstname column
  * @method     ChildPerson[]|ObjectCollection findByLastname(string $lastname) Return ChildPerson objects filtered by the lastname column
  * @method     ChildPerson[]|ObjectCollection findByE-mail(string $e-mail) Return ChildPerson objects filtered by the e-mail column
+ * @method     ChildPerson[]|ObjectCollection findByPhoneNumber(string $phone_number) Return ChildPerson objects filtered by the phone_number column
  * @method     ChildPerson[]|ObjectCollection findByPassword(string $password) Return ChildPerson objects filtered by the password column
  * @method     ChildPerson[]|ObjectCollection findByBirthdate(string $birthdate) Return ChildPerson objects filtered by the birthdate column
  * @method     ChildPerson[]|ObjectCollection findByStreet(string $street) Return ChildPerson objects filtered by the street column
@@ -240,7 +245,7 @@ abstract class PersonQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT person_id, firstname, lastname, e-mail, password, birthdate, street, country, zip_code, type_id FROM person WHERE person_id = :p0';
+        $sql = 'SELECT person_id, firstname, lastname, e-mail, phone_number, password, birthdate, street, country, zip_code, type_id FROM person WHERE person_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -428,6 +433,31 @@ abstract class PersonQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PersonTableMap::COL_E-MAIL, $e-mail, $comparison);
+    }
+
+    /**
+     * Filter the query on the phone_number column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPhoneNumber('fooValue');   // WHERE phone_number = 'fooValue'
+     * $query->filterByPhoneNumber('%fooValue%', Criteria::LIKE); // WHERE phone_number LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $phoneNumber The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPersonQuery The current query, for fluid interface
+     */
+    public function filterByPhoneNumber($phoneNumber = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($phoneNumber)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PersonTableMap::COL_PHONE_NUMBER, $phoneNumber, $comparison);
     }
 
     /**

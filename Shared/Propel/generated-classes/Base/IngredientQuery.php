@@ -23,10 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildIngredientQuery orderByIngredientId($order = Criteria::ASC) Order by the ingredient_id column
  * @method     ChildIngredientQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildIngredientQuery orderByPrice($order = Criteria::ASC) Order by the price column
+ * @method     ChildIngredientQuery orderByIngAvailable($order = Criteria::ASC) Order by the ing_available column
  *
  * @method     ChildIngredientQuery groupByIngredientId() Group by the ingredient_id column
  * @method     ChildIngredientQuery groupByDescription() Group by the description column
  * @method     ChildIngredientQuery groupByPrice() Group by the price column
+ * @method     ChildIngredientQuery groupByIngAvailable() Group by the ing_available column
  *
  * @method     ChildIngredientQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildIngredientQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,7 +65,8 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildIngredient findOneByIngredientId(string $ingredient_id) Return the first ChildIngredient filtered by the ingredient_id column
  * @method     ChildIngredient findOneByDescription(string $description) Return the first ChildIngredient filtered by the description column
- * @method     ChildIngredient findOneByPrice(double $price) Return the first ChildIngredient filtered by the price column *
+ * @method     ChildIngredient findOneByPrice(double $price) Return the first ChildIngredient filtered by the price column
+ * @method     ChildIngredient findOneByIngAvailable(string $ing_available) Return the first ChildIngredient filtered by the ing_available column *
 
  * @method     ChildIngredient requirePk($key, ConnectionInterface $con = null) Return the ChildIngredient by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildIngredient requireOne(ConnectionInterface $con = null) Return the first ChildIngredient matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -71,11 +74,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildIngredient requireOneByIngredientId(string $ingredient_id) Return the first ChildIngredient filtered by the ingredient_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildIngredient requireOneByDescription(string $description) Return the first ChildIngredient filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildIngredient requireOneByPrice(double $price) Return the first ChildIngredient filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIngredient requireOneByIngAvailable(string $ing_available) Return the first ChildIngredient filtered by the ing_available column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildIngredient[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildIngredient objects based on current ModelCriteria
  * @method     ChildIngredient[]|ObjectCollection findByIngredientId(string $ingredient_id) Return ChildIngredient objects filtered by the ingredient_id column
  * @method     ChildIngredient[]|ObjectCollection findByDescription(string $description) Return ChildIngredient objects filtered by the description column
  * @method     ChildIngredient[]|ObjectCollection findByPrice(double $price) Return ChildIngredient objects filtered by the price column
+ * @method     ChildIngredient[]|ObjectCollection findByIngAvailable(string $ing_available) Return ChildIngredient objects filtered by the ing_available column
  * @method     ChildIngredient[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +179,7 @@ abstract class IngredientQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ingredient_id, description, price FROM ingredient WHERE ingredient_id = :p0';
+        $sql = 'SELECT ingredient_id, description, price, ing_available FROM ingredient WHERE ingredient_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -353,6 +358,31 @@ abstract class IngredientQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(IngredientTableMap::COL_PRICE, $price, $comparison);
+    }
+
+    /**
+     * Filter the query on the ing_available column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIngAvailable('fooValue');   // WHERE ing_available = 'fooValue'
+     * $query->filterByIngAvailable('%fooValue%', Criteria::LIKE); // WHERE ing_available LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $ingAvailable The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildIngredientQuery The current query, for fluid interface
+     */
+    public function filterByIngAvailable($ingAvailable = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($ingAvailable)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(IngredientTableMap::COL_ING_AVAILABLE, $ingAvailable, $comparison);
     }
 
     /**

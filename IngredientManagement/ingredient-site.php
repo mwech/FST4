@@ -14,6 +14,7 @@
 						<th scope="col">#</th>
 						<th scope="col">Description</th>
 						<th scope="col">Price [€]</th>
+						<th scope="col">Available</th>
 						<th scope="col">Action</th>
 					</tr>
 				</thead>
@@ -23,7 +24,7 @@
 				?>
 				</tbody>
 			</table>
-			<a href="ingredient-form.php">New ingredient</a><a style="margin-left: 50px;" href="../index.php">Back to app menu</a> 
+			<a href="ingredient-form.php">New ingredient</a><a style="margin-left: 50px;" href="../index.php">Back to main menu</a> 
 		</div>
 	</body>
 </html>

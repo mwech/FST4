@@ -8,8 +8,25 @@
     <body>
         <div class="container">
 			<h1>Wrappings</h1>
-			Coming soon ...<br/><br/>
-			<a href="../index.php">Back to app menu</a>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Description</th>
+						<th scope="col">Price [&euro;]</th>
+						<th scope="col">Creation</th>
+						<th scope="col">Visible</th>
+						<th scope="col">Shape type</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php
+					include 'inc/Read.php';					
+				?>
+				</tbody>
+			</table>
+			<a href="wrapping-form.php">New wrapping</a><a style="margin-left: 50px;" href="../index.php">Back to main menu</a> 
 		</div>
 	</body>
 </html>

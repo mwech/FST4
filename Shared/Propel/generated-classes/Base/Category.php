@@ -79,6 +79,13 @@ abstract class Category implements ActiveRecordInterface
     protected $description;
 
     /**
+     * The value for the cat_active field.
+     *
+     * @var        string
+     */
+    protected $cat_active;
+
+    /**
      * @var        ObjectCollection|ChildIngredientHasCategory[] Collection to store aggregation of ChildIngredientHasCategory objects.
      */
     protected $collIngredientHasCategories;
@@ -344,6 +351,16 @@ abstract class Category implements ActiveRecordInterface
     }
 
     /**
+     * Get the [cat_active] column value.
+     *
+     * @return string
+     */
+    public function getCatActive()
+    {
+        return $this->cat_active;
+    }
+
+    /**
      * Set the value of [category_id] column.
      *
      * @param string $v new value
@@ -382,6 +399,26 @@ abstract class Category implements ActiveRecordInterface
 
         return $this;
     } // setDescription()
+
+    /**
+     * Set the value of [cat_active] column.
+     *
+     * @param string $v new value
+     * @return $this|\Category The current object (for fluent API support)
+     */
+    public function setCatActive($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cat_active !== $v) {
+            $this->cat_active = $v;
+            $this->modifiedColumns[CategoryTableMap::COL_CAT_ACTIVE] = true;
+        }
+
+        return $this;
+    } // setCatActive()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -424,6 +461,9 @@ abstract class Category implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CategoryTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CategoryTableMap::translateFieldName('CatActive', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->cat_active = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,7 +472,7 @@ abstract class Category implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = CategoryTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = CategoryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Category'), 0, $e);
@@ -654,6 +694,9 @@ abstract class Category implements ActiveRecordInterface
         if ($this->isColumnModified(CategoryTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = 'description';
         }
+        if ($this->isColumnModified(CategoryTableMap::COL_CAT_ACTIVE)) {
+            $modifiedColumns[':p' . $index++]  = 'cat_active';
+        }
 
         $sql = sprintf(
             'INSERT INTO category (%s) VALUES (%s)',
@@ -670,6 +713,9 @@ abstract class Category implements ActiveRecordInterface
                         break;
                     case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case 'cat_active':
+                        $stmt->bindValue($identifier, $this->cat_active, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -732,6 +778,9 @@ abstract class Category implements ActiveRecordInterface
             case 1:
                 return $this->getDescription();
                 break;
+            case 2:
+                return $this->getCatActive();
+                break;
             default:
                 return null;
                 break;
@@ -764,6 +813,7 @@ abstract class Category implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getCategoryId(),
             $keys[1] => $this->getDescription(),
+            $keys[2] => $this->getCatActive(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -826,6 +876,9 @@ abstract class Category implements ActiveRecordInterface
             case 1:
                 $this->setDescription($value);
                 break;
+            case 2:
+                $this->setCatActive($value);
+                break;
         } // switch()
 
         return $this;
@@ -857,6 +910,9 @@ abstract class Category implements ActiveRecordInterface
         }
         if (array_key_exists($keys[1], $arr)) {
             $this->setDescription($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setCatActive($arr[$keys[2]]);
         }
     }
 
@@ -904,6 +960,9 @@ abstract class Category implements ActiveRecordInterface
         }
         if ($this->isColumnModified(CategoryTableMap::COL_DESCRIPTION)) {
             $criteria->add(CategoryTableMap::COL_DESCRIPTION, $this->description);
+        }
+        if ($this->isColumnModified(CategoryTableMap::COL_CAT_ACTIVE)) {
+            $criteria->add(CategoryTableMap::COL_CAT_ACTIVE, $this->cat_active);
         }
 
         return $criteria;
@@ -993,6 +1052,7 @@ abstract class Category implements ActiveRecordInterface
     {
         $copyObj->setCategoryId($this->getCategoryId());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setCatActive($this->getCatActive());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1313,6 +1373,7 @@ abstract class Category implements ActiveRecordInterface
     {
         $this->category_id = null;
         $this->description = null;
+        $this->cat_active = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

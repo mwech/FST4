@@ -59,7 +59,7 @@ class PersonTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PersonTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /**
      * the column name for the person_id field
@@ -90,6 +90,11 @@ class PersonTableMap extends TableMap
      * the column name for the e-mail field
      */
     const COL_E-MAIL = 'person.e-mail';
+
+    /**
+     * the column name for the phone_number field
+     */
+    const COL_PHONE_NUMBER = 'person.phone_number';
 
     /**
      * the column name for the password field
@@ -133,11 +138,11 @@ class PersonTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('PersonId', 'Firstname', 'Lastname', 'E-mail', 'Password', 'Birthdate', 'Street', 'Country', 'ZipCode', 'TypeId', ),
-        self::TYPE_CAMELNAME     => array('personId', 'firstname', 'lastname', 'e-mail', 'password', 'birthdate', 'street', 'country', 'zipCode', 'typeId', ),
-        self::TYPE_COLNAME       => array(PersonTableMap::COL_PERSON_ID, PersonTableMap::COL_FIRSTNAME, PersonTableMap::COL_LASTNAME, PersonTableMap::COL_E-MAIL, PersonTableMap::COL_PASSWORD, PersonTableMap::COL_BIRTHDATE, PersonTableMap::COL_STREET, PersonTableMap::COL_COUNTRY, PersonTableMap::COL_ZIP_CODE, PersonTableMap::COL_TYPE_ID, ),
-        self::TYPE_FIELDNAME     => array('person_id', 'firstname', 'lastname', 'e-mail', 'password', 'birthdate', 'street', 'country', 'zip_code', 'type_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('PersonId', 'Firstname', 'Lastname', 'E-mail', 'PhoneNumber', 'Password', 'Birthdate', 'Street', 'Country', 'ZipCode', 'TypeId', ),
+        self::TYPE_CAMELNAME     => array('personId', 'firstname', 'lastname', 'e-mail', 'phoneNumber', 'password', 'birthdate', 'street', 'country', 'zipCode', 'typeId', ),
+        self::TYPE_COLNAME       => array(PersonTableMap::COL_PERSON_ID, PersonTableMap::COL_FIRSTNAME, PersonTableMap::COL_LASTNAME, PersonTableMap::COL_E-MAIL, PersonTableMap::COL_PHONE_NUMBER, PersonTableMap::COL_PASSWORD, PersonTableMap::COL_BIRTHDATE, PersonTableMap::COL_STREET, PersonTableMap::COL_COUNTRY, PersonTableMap::COL_ZIP_CODE, PersonTableMap::COL_TYPE_ID, ),
+        self::TYPE_FIELDNAME     => array('person_id', 'firstname', 'lastname', 'e-mail', 'phone_number', 'password', 'birthdate', 'street', 'country', 'zip_code', 'type_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -147,11 +152,11 @@ class PersonTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('PersonId' => 0, 'Firstname' => 1, 'Lastname' => 2, 'E-mail' => 3, 'Password' => 4, 'Birthdate' => 5, 'Street' => 6, 'Country' => 7, 'ZipCode' => 8, 'TypeId' => 9, ),
-        self::TYPE_CAMELNAME     => array('personId' => 0, 'firstname' => 1, 'lastname' => 2, 'e-mail' => 3, 'password' => 4, 'birthdate' => 5, 'street' => 6, 'country' => 7, 'zipCode' => 8, 'typeId' => 9, ),
-        self::TYPE_COLNAME       => array(PersonTableMap::COL_PERSON_ID => 0, PersonTableMap::COL_FIRSTNAME => 1, PersonTableMap::COL_LASTNAME => 2, PersonTableMap::COL_E-MAIL => 3, PersonTableMap::COL_PASSWORD => 4, PersonTableMap::COL_BIRTHDATE => 5, PersonTableMap::COL_STREET => 6, PersonTableMap::COL_COUNTRY => 7, PersonTableMap::COL_ZIP_CODE => 8, PersonTableMap::COL_TYPE_ID => 9, ),
-        self::TYPE_FIELDNAME     => array('person_id' => 0, 'firstname' => 1, 'lastname' => 2, 'e-mail' => 3, 'password' => 4, 'birthdate' => 5, 'street' => 6, 'country' => 7, 'zip_code' => 8, 'type_id' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('PersonId' => 0, 'Firstname' => 1, 'Lastname' => 2, 'E-mail' => 3, 'PhoneNumber' => 4, 'Password' => 5, 'Birthdate' => 6, 'Street' => 7, 'Country' => 8, 'ZipCode' => 9, 'TypeId' => 10, ),
+        self::TYPE_CAMELNAME     => array('personId' => 0, 'firstname' => 1, 'lastname' => 2, 'e-mail' => 3, 'phoneNumber' => 4, 'password' => 5, 'birthdate' => 6, 'street' => 7, 'country' => 8, 'zipCode' => 9, 'typeId' => 10, ),
+        self::TYPE_COLNAME       => array(PersonTableMap::COL_PERSON_ID => 0, PersonTableMap::COL_FIRSTNAME => 1, PersonTableMap::COL_LASTNAME => 2, PersonTableMap::COL_E-MAIL => 3, PersonTableMap::COL_PHONE_NUMBER => 4, PersonTableMap::COL_PASSWORD => 5, PersonTableMap::COL_BIRTHDATE => 6, PersonTableMap::COL_STREET => 7, PersonTableMap::COL_COUNTRY => 8, PersonTableMap::COL_ZIP_CODE => 9, PersonTableMap::COL_TYPE_ID => 10, ),
+        self::TYPE_FIELDNAME     => array('person_id' => 0, 'firstname' => 1, 'lastname' => 2, 'e-mail' => 3, 'phone_number' => 4, 'password' => 5, 'birthdate' => 6, 'street' => 7, 'country' => 8, 'zip_code' => 9, 'type_id' => 10, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -175,6 +180,7 @@ class PersonTableMap extends TableMap
         $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 45, null);
         $this->addColumn('lastname', 'Lastname', 'VARCHAR', false, 45, null);
         $this->addColumn('e-mail', 'E-mail', 'VARCHAR', false, 45, null);
+        $this->addColumn('phone_number', 'PhoneNumber', 'VARCHAR', false, 15, null);
         $this->addColumn('password', 'Password', 'VARCHAR', false, 45, null);
         $this->addColumn('birthdate', 'Birthdate', 'VARCHAR', false, 45, null);
         $this->addColumn('street', 'Street', 'VARCHAR', false, 45, null);
@@ -370,6 +376,7 @@ class PersonTableMap extends TableMap
             $criteria->addSelectColumn(PersonTableMap::COL_FIRSTNAME);
             $criteria->addSelectColumn(PersonTableMap::COL_LASTNAME);
             $criteria->addSelectColumn(PersonTableMap::COL_E-MAIL);
+            $criteria->addSelectColumn(PersonTableMap::COL_PHONE_NUMBER);
             $criteria->addSelectColumn(PersonTableMap::COL_PASSWORD);
             $criteria->addSelectColumn(PersonTableMap::COL_BIRTHDATE);
             $criteria->addSelectColumn(PersonTableMap::COL_STREET);
@@ -381,6 +388,7 @@ class PersonTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.firstname');
             $criteria->addSelectColumn($alias . '.lastname');
             $criteria->addSelectColumn($alias . '.e-mail');
+            $criteria->addSelectColumn($alias . '.phone_number');
             $criteria->addSelectColumn($alias . '.password');
             $criteria->addSelectColumn($alias . '.birthdate');
             $criteria->addSelectColumn($alias . '.street');

@@ -59,7 +59,7 @@ class CategoryTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class CategoryTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the category_id field
@@ -80,6 +80,11 @@ class CategoryTableMap extends TableMap
      * the column name for the description field
      */
     const COL_DESCRIPTION = 'category.description';
+
+    /**
+     * the column name for the cat_active field
+     */
+    const COL_CAT_ACTIVE = 'category.cat_active';
 
     /**
      * The default string format for model objects of the related table
@@ -93,11 +98,11 @@ class CategoryTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('CategoryId', 'Description', ),
-        self::TYPE_CAMELNAME     => array('categoryId', 'description', ),
-        self::TYPE_COLNAME       => array(CategoryTableMap::COL_CATEGORY_ID, CategoryTableMap::COL_DESCRIPTION, ),
-        self::TYPE_FIELDNAME     => array('category_id', 'description', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('CategoryId', 'Description', 'CatActive', ),
+        self::TYPE_CAMELNAME     => array('categoryId', 'description', 'catActive', ),
+        self::TYPE_COLNAME       => array(CategoryTableMap::COL_CATEGORY_ID, CategoryTableMap::COL_DESCRIPTION, CategoryTableMap::COL_CAT_ACTIVE, ),
+        self::TYPE_FIELDNAME     => array('category_id', 'description', 'cat_active', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -107,11 +112,11 @@ class CategoryTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('CategoryId' => 0, 'Description' => 1, ),
-        self::TYPE_CAMELNAME     => array('categoryId' => 0, 'description' => 1, ),
-        self::TYPE_COLNAME       => array(CategoryTableMap::COL_CATEGORY_ID => 0, CategoryTableMap::COL_DESCRIPTION => 1, ),
-        self::TYPE_FIELDNAME     => array('category_id' => 0, 'description' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('CategoryId' => 0, 'Description' => 1, 'CatActive' => 2, ),
+        self::TYPE_CAMELNAME     => array('categoryId' => 0, 'description' => 1, 'catActive' => 2, ),
+        self::TYPE_COLNAME       => array(CategoryTableMap::COL_CATEGORY_ID => 0, CategoryTableMap::COL_DESCRIPTION => 1, CategoryTableMap::COL_CAT_ACTIVE => 2, ),
+        self::TYPE_FIELDNAME     => array('category_id' => 0, 'description' => 1, 'cat_active' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -133,6 +138,7 @@ class CategoryTableMap extends TableMap
         // columns
         $this->addPrimaryKey('category_id', 'CategoryId', 'VARCHAR', true, 36, null);
         $this->addColumn('description', 'Description', 'VARCHAR', false, 45, null);
+        $this->addColumn('cat_active', 'CatActive', 'VARCHAR', false, 1, null);
     } // initialize()
 
     /**
@@ -292,9 +298,11 @@ class CategoryTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(CategoryTableMap::COL_CATEGORY_ID);
             $criteria->addSelectColumn(CategoryTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(CategoryTableMap::COL_CAT_ACTIVE);
         } else {
             $criteria->addSelectColumn($alias . '.category_id');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.cat_active');
         }
     }
 

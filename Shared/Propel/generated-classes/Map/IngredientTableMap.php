@@ -59,7 +59,7 @@ class IngredientTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class IngredientTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the ingredient_id field
@@ -87,6 +87,11 @@ class IngredientTableMap extends TableMap
     const COL_PRICE = 'ingredient.price';
 
     /**
+     * the column name for the ing_available field
+     */
+    const COL_ING_AVAILABLE = 'ingredient.ing_available';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -98,11 +103,11 @@ class IngredientTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IngredientId', 'Description', 'Price', ),
-        self::TYPE_CAMELNAME     => array('ingredientId', 'description', 'price', ),
-        self::TYPE_COLNAME       => array(IngredientTableMap::COL_INGREDIENT_ID, IngredientTableMap::COL_DESCRIPTION, IngredientTableMap::COL_PRICE, ),
-        self::TYPE_FIELDNAME     => array('ingredient_id', 'description', 'price', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('IngredientId', 'Description', 'Price', 'IngAvailable', ),
+        self::TYPE_CAMELNAME     => array('ingredientId', 'description', 'price', 'ingAvailable', ),
+        self::TYPE_COLNAME       => array(IngredientTableMap::COL_INGREDIENT_ID, IngredientTableMap::COL_DESCRIPTION, IngredientTableMap::COL_PRICE, IngredientTableMap::COL_ING_AVAILABLE, ),
+        self::TYPE_FIELDNAME     => array('ingredient_id', 'description', 'price', 'ing_available', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -112,11 +117,11 @@ class IngredientTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IngredientId' => 0, 'Description' => 1, 'Price' => 2, ),
-        self::TYPE_CAMELNAME     => array('ingredientId' => 0, 'description' => 1, 'price' => 2, ),
-        self::TYPE_COLNAME       => array(IngredientTableMap::COL_INGREDIENT_ID => 0, IngredientTableMap::COL_DESCRIPTION => 1, IngredientTableMap::COL_PRICE => 2, ),
-        self::TYPE_FIELDNAME     => array('ingredient_id' => 0, 'description' => 1, 'price' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('IngredientId' => 0, 'Description' => 1, 'Price' => 2, 'IngAvailable' => 3, ),
+        self::TYPE_CAMELNAME     => array('ingredientId' => 0, 'description' => 1, 'price' => 2, 'ingAvailable' => 3, ),
+        self::TYPE_COLNAME       => array(IngredientTableMap::COL_INGREDIENT_ID => 0, IngredientTableMap::COL_DESCRIPTION => 1, IngredientTableMap::COL_PRICE => 2, IngredientTableMap::COL_ING_AVAILABLE => 3, ),
+        self::TYPE_FIELDNAME     => array('ingredient_id' => 0, 'description' => 1, 'price' => 2, 'ing_available' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -139,6 +144,7 @@ class IngredientTableMap extends TableMap
         $this->addPrimaryKey('ingredient_id', 'IngredientId', 'VARCHAR', true, 36, null);
         $this->addColumn('description', 'Description', 'VARCHAR', false, 45, null);
         $this->addColumn('price', 'Price', 'DOUBLE', false, null, null);
+        $this->addColumn('ing_available', 'IngAvailable', 'VARCHAR', false, 1, null);
     } // initialize()
 
     /**
@@ -306,10 +312,12 @@ class IngredientTableMap extends TableMap
             $criteria->addSelectColumn(IngredientTableMap::COL_INGREDIENT_ID);
             $criteria->addSelectColumn(IngredientTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(IngredientTableMap::COL_PRICE);
+            $criteria->addSelectColumn(IngredientTableMap::COL_ING_AVAILABLE);
         } else {
             $criteria->addSelectColumn($alias . '.ingredient_id');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.price');
+            $criteria->addSelectColumn($alias . '.ing_available');
         }
     }
 

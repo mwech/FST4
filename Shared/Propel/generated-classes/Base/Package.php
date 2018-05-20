@@ -86,6 +86,13 @@ abstract class Package implements ActiveRecordInterface
     protected $price;
 
     /**
+     * The value for the pack_active field.
+     *
+     * @var        string
+     */
+    protected $pack_active;
+
+    /**
      * @var        ObjectCollection|ChildPackageHasArticles[] Collection to store aggregation of ChildPackageHasArticles objects.
      */
     protected $collPackageHasArticless;
@@ -361,6 +368,16 @@ abstract class Package implements ActiveRecordInterface
     }
 
     /**
+     * Get the [pack_active] column value.
+     *
+     * @return string
+     */
+    public function getPackActive()
+    {
+        return $this->pack_active;
+    }
+
+    /**
      * Set the value of [package_id] column.
      *
      * @param string $v new value
@@ -421,6 +438,26 @@ abstract class Package implements ActiveRecordInterface
     } // setPrice()
 
     /**
+     * Set the value of [pack_active] column.
+     *
+     * @param string $v new value
+     * @return $this|\Package The current object (for fluent API support)
+     */
+    public function setPackActive($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->pack_active !== $v) {
+            $this->pack_active = $v;
+            $this->modifiedColumns[PackageTableMap::COL_PACK_ACTIVE] = true;
+        }
+
+        return $this;
+    } // setPackActive()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -464,6 +501,9 @@ abstract class Package implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PackageTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (double) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PackageTableMap::translateFieldName('PackActive', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->pack_active = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -472,7 +512,7 @@ abstract class Package implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = PackageTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = PackageTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Package'), 0, $e);
@@ -697,6 +737,9 @@ abstract class Package implements ActiveRecordInterface
         if ($this->isColumnModified(PackageTableMap::COL_PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'price';
         }
+        if ($this->isColumnModified(PackageTableMap::COL_PACK_ACTIVE)) {
+            $modifiedColumns[':p' . $index++]  = 'pack_active';
+        }
 
         $sql = sprintf(
             'INSERT INTO package (%s) VALUES (%s)',
@@ -716,6 +759,9 @@ abstract class Package implements ActiveRecordInterface
                         break;
                     case 'price':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
+                        break;
+                    case 'pack_active':
+                        $stmt->bindValue($identifier, $this->pack_active, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -781,6 +827,9 @@ abstract class Package implements ActiveRecordInterface
             case 2:
                 return $this->getPrice();
                 break;
+            case 3:
+                return $this->getPackActive();
+                break;
             default:
                 return null;
                 break;
@@ -814,6 +863,7 @@ abstract class Package implements ActiveRecordInterface
             $keys[0] => $this->getPackageId(),
             $keys[1] => $this->getDescription(),
             $keys[2] => $this->getPrice(),
+            $keys[3] => $this->getPackActive(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -879,6 +929,9 @@ abstract class Package implements ActiveRecordInterface
             case 2:
                 $this->setPrice($value);
                 break;
+            case 3:
+                $this->setPackActive($value);
+                break;
         } // switch()
 
         return $this;
@@ -913,6 +966,9 @@ abstract class Package implements ActiveRecordInterface
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setPrice($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setPackActive($arr[$keys[3]]);
         }
     }
 
@@ -963,6 +1019,9 @@ abstract class Package implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PackageTableMap::COL_PRICE)) {
             $criteria->add(PackageTableMap::COL_PRICE, $this->price);
+        }
+        if ($this->isColumnModified(PackageTableMap::COL_PACK_ACTIVE)) {
+            $criteria->add(PackageTableMap::COL_PACK_ACTIVE, $this->pack_active);
         }
 
         return $criteria;
@@ -1053,6 +1112,7 @@ abstract class Package implements ActiveRecordInterface
         $copyObj->setPackageId($this->getPackageId());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setPrice($this->getPrice());
+        $copyObj->setPackActive($this->getPackActive());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1374,6 +1434,7 @@ abstract class Package implements ActiveRecordInterface
         $this->package_id = null;
         $this->description = null;
         $this->price = null;
+        $this->pack_active = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

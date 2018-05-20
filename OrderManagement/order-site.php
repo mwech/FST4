@@ -9,7 +9,7 @@
         <div class="container">
 			<h1>Orders</h1>
 			Coming soon ...<br/><br/>
-			<a href="../index.php">Back to app menu</a>
+			<a href="../index.php">Back to main menu</a>
 		</div>
 	</body>
 </html>

@@ -59,7 +59,7 @@ class PackageTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PackageTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the package_id field
@@ -87,6 +87,11 @@ class PackageTableMap extends TableMap
     const COL_PRICE = 'package.price';
 
     /**
+     * the column name for the pack_active field
+     */
+    const COL_PACK_ACTIVE = 'package.pack_active';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -98,11 +103,11 @@ class PackageTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('PackageId', 'Description', 'Price', ),
-        self::TYPE_CAMELNAME     => array('packageId', 'description', 'price', ),
-        self::TYPE_COLNAME       => array(PackageTableMap::COL_PACKAGE_ID, PackageTableMap::COL_DESCRIPTION, PackageTableMap::COL_PRICE, ),
-        self::TYPE_FIELDNAME     => array('package_id', 'description', 'price', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('PackageId', 'Description', 'Price', 'PackActive', ),
+        self::TYPE_CAMELNAME     => array('packageId', 'description', 'price', 'packActive', ),
+        self::TYPE_COLNAME       => array(PackageTableMap::COL_PACKAGE_ID, PackageTableMap::COL_DESCRIPTION, PackageTableMap::COL_PRICE, PackageTableMap::COL_PACK_ACTIVE, ),
+        self::TYPE_FIELDNAME     => array('package_id', 'description', 'price', 'pack_active', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -112,11 +117,11 @@ class PackageTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('PackageId' => 0, 'Description' => 1, 'Price' => 2, ),
-        self::TYPE_CAMELNAME     => array('packageId' => 0, 'description' => 1, 'price' => 2, ),
-        self::TYPE_COLNAME       => array(PackageTableMap::COL_PACKAGE_ID => 0, PackageTableMap::COL_DESCRIPTION => 1, PackageTableMap::COL_PRICE => 2, ),
-        self::TYPE_FIELDNAME     => array('package_id' => 0, 'description' => 1, 'price' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('PackageId' => 0, 'Description' => 1, 'Price' => 2, 'PackActive' => 3, ),
+        self::TYPE_CAMELNAME     => array('packageId' => 0, 'description' => 1, 'price' => 2, 'packActive' => 3, ),
+        self::TYPE_COLNAME       => array(PackageTableMap::COL_PACKAGE_ID => 0, PackageTableMap::COL_DESCRIPTION => 1, PackageTableMap::COL_PRICE => 2, PackageTableMap::COL_PACK_ACTIVE => 3, ),
+        self::TYPE_FIELDNAME     => array('package_id' => 0, 'description' => 1, 'price' => 2, 'pack_active' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -139,6 +144,7 @@ class PackageTableMap extends TableMap
         $this->addPrimaryKey('package_id', 'PackageId', 'VARCHAR', true, 36, null);
         $this->addColumn('description', 'Description', 'VARCHAR', false, 45, null);
         $this->addColumn('price', 'Price', 'DOUBLE', false, null, null);
+        $this->addColumn('pack_active', 'PackActive', 'VARCHAR', false, 1, null);
     } // initialize()
 
     /**
@@ -299,10 +305,12 @@ class PackageTableMap extends TableMap
             $criteria->addSelectColumn(PackageTableMap::COL_PACKAGE_ID);
             $criteria->addSelectColumn(PackageTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(PackageTableMap::COL_PRICE);
+            $criteria->addSelectColumn(PackageTableMap::COL_PACK_ACTIVE);
         } else {
             $criteria->addSelectColumn($alias . '.package_id');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.price');
+            $criteria->addSelectColumn($alias . '.pack_active');
         }
     }
 

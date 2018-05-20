@@ -3,7 +3,6 @@
 require_once '../Shared/Propel/vendor/autoload.php';
 // setup Propel
 require_once '../Shared/Propel/generated-conf/config.php';
-if (session_status() == PHP_SESSION_NONE) {session_start();}
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +20,7 @@ if (session_status() == PHP_SESSION_NONE) {session_start();}
 									->findOne();	
 					echo "<h1>Edit ingredient</h1><form method='post' action='inc/Update.php'>";					
 				} else {
-					echo "<h1>New ingredient</h1><form method='post' action='inc/Insert.php'>";
+					echo "<h1>New ingredient</h1><form method='post' action='inc/Create.php'>";
 				}
 			?>
 				<div class="form-group">
@@ -38,6 +37,17 @@ if (session_status() == PHP_SESSION_NONE) {session_start();}
 					</div>
 					<div class="col-sm-9">
 						<input type="text" name="price" class="form-control" value="<?php if(isset($_GET["id"])){ echo $ingredientToUpdate->getPrice();}?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-3">
+						<label for="available" class="control-label">Available</label>
+					</div>
+					<div class="col-sm-9">
+						<select name="available">
+							<option value="0" <?php if(isset($_GET["id"])){ if($ingredientToUpdate->getIngAvailable()==0)echo "selected";}?> > nein </option>
+							<option value="1" <?php if(isset($_GET["id"])){ if($ingredientToUpdate->getIngAvailable()==1)echo "selected";}?> > ja </option>
+						</select>
 					</div>
 				</div>
 				<div class="form-group">

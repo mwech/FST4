@@ -89,6 +89,13 @@ abstract class Ingredient implements ActiveRecordInterface
     protected $price;
 
     /**
+     * The value for the ing_available field.
+     *
+     * @var        string
+     */
+    protected $ing_available;
+
+    /**
      * @var        ObjectCollection|ChildArticleHasIngredient[] Collection to store aggregation of ChildArticleHasIngredient objects.
      */
     protected $collArticleHasIngredients;
@@ -376,6 +383,16 @@ abstract class Ingredient implements ActiveRecordInterface
     }
 
     /**
+     * Get the [ing_available] column value.
+     *
+     * @return string
+     */
+    public function getIngAvailable()
+    {
+        return $this->ing_available;
+    }
+
+    /**
      * Set the value of [ingredient_id] column.
      *
      * @param string $v new value
@@ -436,6 +453,26 @@ abstract class Ingredient implements ActiveRecordInterface
     } // setPrice()
 
     /**
+     * Set the value of [ing_available] column.
+     *
+     * @param string $v new value
+     * @return $this|\Ingredient The current object (for fluent API support)
+     */
+    public function setIngAvailable($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->ing_available !== $v) {
+            $this->ing_available = $v;
+            $this->modifiedColumns[IngredientTableMap::COL_ING_AVAILABLE] = true;
+        }
+
+        return $this;
+    } // setIngAvailable()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -479,6 +516,9 @@ abstract class Ingredient implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : IngredientTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (double) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : IngredientTableMap::translateFieldName('IngAvailable', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->ing_available = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -487,7 +527,7 @@ abstract class Ingredient implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = IngredientTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = IngredientTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Ingredient'), 0, $e);
@@ -731,6 +771,9 @@ abstract class Ingredient implements ActiveRecordInterface
         if ($this->isColumnModified(IngredientTableMap::COL_PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'price';
         }
+        if ($this->isColumnModified(IngredientTableMap::COL_ING_AVAILABLE)) {
+            $modifiedColumns[':p' . $index++]  = 'ing_available';
+        }
 
         $sql = sprintf(
             'INSERT INTO ingredient (%s) VALUES (%s)',
@@ -750,6 +793,9 @@ abstract class Ingredient implements ActiveRecordInterface
                         break;
                     case 'price':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
+                        break;
+                    case 'ing_available':
+                        $stmt->bindValue($identifier, $this->ing_available, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -815,6 +861,9 @@ abstract class Ingredient implements ActiveRecordInterface
             case 2:
                 return $this->getPrice();
                 break;
+            case 3:
+                return $this->getIngAvailable();
+                break;
             default:
                 return null;
                 break;
@@ -848,6 +897,7 @@ abstract class Ingredient implements ActiveRecordInterface
             $keys[0] => $this->getIngredientId(),
             $keys[1] => $this->getDescription(),
             $keys[2] => $this->getPrice(),
+            $keys[3] => $this->getIngAvailable(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -928,6 +978,9 @@ abstract class Ingredient implements ActiveRecordInterface
             case 2:
                 $this->setPrice($value);
                 break;
+            case 3:
+                $this->setIngAvailable($value);
+                break;
         } // switch()
 
         return $this;
@@ -962,6 +1015,9 @@ abstract class Ingredient implements ActiveRecordInterface
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setPrice($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setIngAvailable($arr[$keys[3]]);
         }
     }
 
@@ -1012,6 +1068,9 @@ abstract class Ingredient implements ActiveRecordInterface
         }
         if ($this->isColumnModified(IngredientTableMap::COL_PRICE)) {
             $criteria->add(IngredientTableMap::COL_PRICE, $this->price);
+        }
+        if ($this->isColumnModified(IngredientTableMap::COL_ING_AVAILABLE)) {
+            $criteria->add(IngredientTableMap::COL_ING_AVAILABLE, $this->ing_available);
         }
 
         return $criteria;
@@ -1102,6 +1161,7 @@ abstract class Ingredient implements ActiveRecordInterface
         $copyObj->setIngredientId($this->getIngredientId());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setPrice($this->getPrice());
+        $copyObj->setIngAvailable($this->getIngAvailable());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1686,6 +1746,7 @@ abstract class Ingredient implements ActiveRecordInterface
         $this->ingredient_id = null;
         $this->description = null;
         $this->price = null;
+        $this->ing_available = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

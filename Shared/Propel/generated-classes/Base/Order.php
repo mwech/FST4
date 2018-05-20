@@ -92,6 +92,13 @@ abstract class Order implements ActiveRecordInterface
     protected $total_amount;
 
     /**
+     * The value for the status field.
+     *
+     * @var        string
+     */
+    protected $status;
+
+    /**
      * The value for the person_id field.
      *
      * @var        string
@@ -401,6 +408,16 @@ abstract class Order implements ActiveRecordInterface
     }
 
     /**
+     * Get the [status] column value.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Get the [person_id] column value.
      *
      * @return string
@@ -479,6 +496,26 @@ abstract class Order implements ActiveRecordInterface
 
         return $this;
     } // setTotalAmount()
+
+    /**
+     * Set the value of [status] column.
+     *
+     * @param string $v new value
+     * @return $this|\Order The current object (for fluent API support)
+     */
+    public function setStatus($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[OrderTableMap::COL_STATUS] = true;
+        }
+
+        return $this;
+    } // setStatus()
 
     /**
      * Set the value of [person_id] column.
@@ -576,10 +613,13 @@ abstract class Order implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : OrderTableMap::translateFieldName('TotalAmount', TableMap::TYPE_PHPNAME, $indexType)];
             $this->total_amount = (null !== $col) ? (double) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrderTableMap::translateFieldName('PersonId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrderTableMap::translateFieldName('Status', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->status = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : OrderTableMap::translateFieldName('PersonId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->person_id = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : OrderTableMap::translateFieldName('VoucherId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : OrderTableMap::translateFieldName('VoucherId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->voucher_id = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -589,7 +629,7 @@ abstract class Order implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = OrderTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = OrderTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Order'), 0, $e);
@@ -841,6 +881,9 @@ abstract class Order implements ActiveRecordInterface
         if ($this->isColumnModified(OrderTableMap::COL_TOTAL_AMOUNT)) {
             $modifiedColumns[':p' . $index++]  = 'total_amount';
         }
+        if ($this->isColumnModified(OrderTableMap::COL_STATUS)) {
+            $modifiedColumns[':p' . $index++]  = 'status';
+        }
         if ($this->isColumnModified(OrderTableMap::COL_PERSON_ID)) {
             $modifiedColumns[':p' . $index++]  = 'person_id';
         }
@@ -866,6 +909,9 @@ abstract class Order implements ActiveRecordInterface
                         break;
                     case 'total_amount':
                         $stmt->bindValue($identifier, $this->total_amount, PDO::PARAM_STR);
+                        break;
+                    case 'status':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_STR);
                         break;
                     case 'person_id':
                         $stmt->bindValue($identifier, $this->person_id, PDO::PARAM_STR);
@@ -938,9 +984,12 @@ abstract class Order implements ActiveRecordInterface
                 return $this->getTotalAmount();
                 break;
             case 3:
-                return $this->getPersonId();
+                return $this->getStatus();
                 break;
             case 4:
+                return $this->getPersonId();
+                break;
+            case 5:
                 return $this->getVoucherId();
                 break;
             default:
@@ -976,8 +1025,9 @@ abstract class Order implements ActiveRecordInterface
             $keys[0] => $this->getOrderId(),
             $keys[1] => $this->getDate(),
             $keys[2] => $this->getTotalAmount(),
-            $keys[3] => $this->getPersonId(),
-            $keys[4] => $this->getVoucherId(),
+            $keys[3] => $this->getStatus(),
+            $keys[4] => $this->getPersonId(),
+            $keys[5] => $this->getVoucherId(),
         );
         if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
@@ -1078,9 +1128,12 @@ abstract class Order implements ActiveRecordInterface
                 $this->setTotalAmount($value);
                 break;
             case 3:
-                $this->setPersonId($value);
+                $this->setStatus($value);
                 break;
             case 4:
+                $this->setPersonId($value);
+                break;
+            case 5:
                 $this->setVoucherId($value);
                 break;
         } // switch()
@@ -1119,10 +1172,13 @@ abstract class Order implements ActiveRecordInterface
             $this->setTotalAmount($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setPersonId($arr[$keys[3]]);
+            $this->setStatus($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setVoucherId($arr[$keys[4]]);
+            $this->setPersonId($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setVoucherId($arr[$keys[5]]);
         }
     }
 
@@ -1173,6 +1229,9 @@ abstract class Order implements ActiveRecordInterface
         }
         if ($this->isColumnModified(OrderTableMap::COL_TOTAL_AMOUNT)) {
             $criteria->add(OrderTableMap::COL_TOTAL_AMOUNT, $this->total_amount);
+        }
+        if ($this->isColumnModified(OrderTableMap::COL_STATUS)) {
+            $criteria->add(OrderTableMap::COL_STATUS, $this->status);
         }
         if ($this->isColumnModified(OrderTableMap::COL_PERSON_ID)) {
             $criteria->add(OrderTableMap::COL_PERSON_ID, $this->person_id);
@@ -1269,6 +1328,7 @@ abstract class Order implements ActiveRecordInterface
         $copyObj->setOrderId($this->getOrderId());
         $copyObj->setDate($this->getDate());
         $copyObj->setTotalAmount($this->getTotalAmount());
+        $copyObj->setStatus($this->getStatus());
         $copyObj->setPersonId($this->getPersonId());
         $copyObj->setVoucherId($this->getVoucherId());
 
@@ -1700,6 +1760,7 @@ abstract class Order implements ActiveRecordInterface
         $this->order_id = null;
         $this->date = null;
         $this->total_amount = null;
+        $this->status = null;
         $this->person_id = null;
         $this->voucher_id = null;
         $this->alreadyInSave = false;

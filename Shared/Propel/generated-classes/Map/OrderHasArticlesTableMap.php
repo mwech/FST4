@@ -59,7 +59,7 @@ class OrderHasArticlesTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class OrderHasArticlesTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the order_id field
@@ -87,11 +87,6 @@ class OrderHasArticlesTableMap extends TableMap
     const COL_AMOUNT = 'order_has_articles.amount';
 
     /**
-     * the column name for the price field
-     */
-    const COL_PRICE = 'order_has_articles.price';
-
-    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,11 +98,11 @@ class OrderHasArticlesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('OrderId', 'ArticleId', 'Amount', 'Price', ),
-        self::TYPE_CAMELNAME     => array('orderId', 'articleId', 'amount', 'price', ),
-        self::TYPE_COLNAME       => array(OrderHasArticlesTableMap::COL_ORDER_ID, OrderHasArticlesTableMap::COL_ARTICLE_ID, OrderHasArticlesTableMap::COL_AMOUNT, OrderHasArticlesTableMap::COL_PRICE, ),
-        self::TYPE_FIELDNAME     => array('order_id', 'article_id', 'amount', 'price', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('OrderId', 'ArticleId', 'Amount', ),
+        self::TYPE_CAMELNAME     => array('orderId', 'articleId', 'amount', ),
+        self::TYPE_COLNAME       => array(OrderHasArticlesTableMap::COL_ORDER_ID, OrderHasArticlesTableMap::COL_ARTICLE_ID, OrderHasArticlesTableMap::COL_AMOUNT, ),
+        self::TYPE_FIELDNAME     => array('order_id', 'article_id', 'amount', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -117,11 +112,11 @@ class OrderHasArticlesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('OrderId' => 0, 'ArticleId' => 1, 'Amount' => 2, 'Price' => 3, ),
-        self::TYPE_CAMELNAME     => array('orderId' => 0, 'articleId' => 1, 'amount' => 2, 'price' => 3, ),
-        self::TYPE_COLNAME       => array(OrderHasArticlesTableMap::COL_ORDER_ID => 0, OrderHasArticlesTableMap::COL_ARTICLE_ID => 1, OrderHasArticlesTableMap::COL_AMOUNT => 2, OrderHasArticlesTableMap::COL_PRICE => 3, ),
-        self::TYPE_FIELDNAME     => array('order_id' => 0, 'article_id' => 1, 'amount' => 2, 'price' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('OrderId' => 0, 'ArticleId' => 1, 'Amount' => 2, ),
+        self::TYPE_CAMELNAME     => array('orderId' => 0, 'articleId' => 1, 'amount' => 2, ),
+        self::TYPE_COLNAME       => array(OrderHasArticlesTableMap::COL_ORDER_ID => 0, OrderHasArticlesTableMap::COL_ARTICLE_ID => 1, OrderHasArticlesTableMap::COL_AMOUNT => 2, ),
+        self::TYPE_FIELDNAME     => array('order_id' => 0, 'article_id' => 1, 'amount' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -144,7 +139,6 @@ class OrderHasArticlesTableMap extends TableMap
         $this->addForeignPrimaryKey('order_id', 'OrderId', 'VARCHAR' , 'order', 'order_id', true, 36, null);
         $this->addForeignPrimaryKey('article_id', 'ArticleId', 'VARCHAR' , 'article', 'article_id', true, 36, null);
         $this->addColumn('amount', 'Amount', 'INTEGER', false, null, null);
-        $this->addColumn('price', 'Price', 'DOUBLE', false, null, null);
     } // initialize()
 
     /**
@@ -374,12 +368,10 @@ class OrderHasArticlesTableMap extends TableMap
             $criteria->addSelectColumn(OrderHasArticlesTableMap::COL_ORDER_ID);
             $criteria->addSelectColumn(OrderHasArticlesTableMap::COL_ARTICLE_ID);
             $criteria->addSelectColumn(OrderHasArticlesTableMap::COL_AMOUNT);
-            $criteria->addSelectColumn(OrderHasArticlesTableMap::COL_PRICE);
         } else {
             $criteria->addSelectColumn($alias . '.order_id');
             $criteria->addSelectColumn($alias . '.article_id');
             $criteria->addSelectColumn($alias . '.amount');
-            $criteria->addSelectColumn($alias . '.price');
         }
     }
 

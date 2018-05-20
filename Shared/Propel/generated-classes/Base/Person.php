@@ -103,6 +103,13 @@ abstract class Person implements ActiveRecordInterface
     protected $e-mail;
 
     /**
+     * The value for the phone_number field.
+     *
+     * @var        string
+     */
+    protected $phone_number;
+
+    /**
      * The value for the password field.
      *
      * @var        string
@@ -464,6 +471,16 @@ abstract class Person implements ActiveRecordInterface
     }
 
     /**
+     * Get the [phone_number] column value.
+     *
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phone_number;
+    }
+
+    /**
      * Get the [password] column value.
      *
      * @return string
@@ -602,6 +619,26 @@ abstract class Person implements ActiveRecordInterface
 
         return $this;
     } // setE-mail()
+
+    /**
+     * Set the value of [phone_number] column.
+     *
+     * @param string $v new value
+     * @return $this|\Person The current object (for fluent API support)
+     */
+    public function setPhoneNumber($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->phone_number !== $v) {
+            $this->phone_number = $v;
+            $this->modifiedColumns[PersonTableMap::COL_PHONE_NUMBER] = true;
+        }
+
+        return $this;
+    } // setPhoneNumber()
 
     /**
      * Set the value of [password] column.
@@ -779,22 +816,25 @@ abstract class Person implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PersonTableMap::translateFieldName('E-mail', TableMap::TYPE_PHPNAME, $indexType)];
             $this->e-mail = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PersonTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PersonTableMap::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->phone_number = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PersonTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
             $this->password = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PersonTableMap::translateFieldName('Birthdate', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PersonTableMap::translateFieldName('Birthdate', TableMap::TYPE_PHPNAME, $indexType)];
             $this->birthdate = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PersonTableMap::translateFieldName('Street', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PersonTableMap::translateFieldName('Street', TableMap::TYPE_PHPNAME, $indexType)];
             $this->street = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PersonTableMap::translateFieldName('Country', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PersonTableMap::translateFieldName('Country', TableMap::TYPE_PHPNAME, $indexType)];
             $this->country = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PersonTableMap::translateFieldName('ZipCode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PersonTableMap::translateFieldName('ZipCode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->zip_code = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PersonTableMap::translateFieldName('TypeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : PersonTableMap::translateFieldName('TypeId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->type_id = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -804,7 +844,7 @@ abstract class Person implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = PersonTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = PersonTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Person'), 0, $e);
@@ -1097,6 +1137,9 @@ abstract class Person implements ActiveRecordInterface
         if ($this->isColumnModified(PersonTableMap::COL_E-MAIL)) {
             $modifiedColumns[':p' . $index++]  = 'e-mail';
         }
+        if ($this->isColumnModified(PersonTableMap::COL_PHONE_NUMBER)) {
+            $modifiedColumns[':p' . $index++]  = 'phone_number';
+        }
         if ($this->isColumnModified(PersonTableMap::COL_PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = 'password';
         }
@@ -1137,6 +1180,9 @@ abstract class Person implements ActiveRecordInterface
                         break;
                     case 'e-mail':
                         $stmt->bindValue($identifier, $this->e-mail, PDO::PARAM_STR);
+                        break;
+                    case 'phone_number':
+                        $stmt->bindValue($identifier, $this->phone_number, PDO::PARAM_STR);
                         break;
                     case 'password':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
@@ -1224,21 +1270,24 @@ abstract class Person implements ActiveRecordInterface
                 return $this->getE-mail();
                 break;
             case 4:
-                return $this->getPassword();
+                return $this->getPhoneNumber();
                 break;
             case 5:
-                return $this->getBirthdate();
+                return $this->getPassword();
                 break;
             case 6:
-                return $this->getStreet();
+                return $this->getBirthdate();
                 break;
             case 7:
-                return $this->getCountry();
+                return $this->getStreet();
                 break;
             case 8:
-                return $this->getZipCode();
+                return $this->getCountry();
                 break;
             case 9:
+                return $this->getZipCode();
+                break;
+            case 10:
                 return $this->getTypeId();
                 break;
             default:
@@ -1275,12 +1324,13 @@ abstract class Person implements ActiveRecordInterface
             $keys[1] => $this->getFirstname(),
             $keys[2] => $this->getLastname(),
             $keys[3] => $this->getE-mail(),
-            $keys[4] => $this->getPassword(),
-            $keys[5] => $this->getBirthdate(),
-            $keys[6] => $this->getStreet(),
-            $keys[7] => $this->getCountry(),
-            $keys[8] => $this->getZipCode(),
-            $keys[9] => $this->getTypeId(),
+            $keys[4] => $this->getPhoneNumber(),
+            $keys[5] => $this->getPassword(),
+            $keys[6] => $this->getBirthdate(),
+            $keys[7] => $this->getStreet(),
+            $keys[8] => $this->getCountry(),
+            $keys[9] => $this->getZipCode(),
+            $keys[10] => $this->getTypeId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1410,21 +1460,24 @@ abstract class Person implements ActiveRecordInterface
                 $this->setE-mail($value);
                 break;
             case 4:
-                $this->setPassword($value);
+                $this->setPhoneNumber($value);
                 break;
             case 5:
-                $this->setBirthdate($value);
+                $this->setPassword($value);
                 break;
             case 6:
-                $this->setStreet($value);
+                $this->setBirthdate($value);
                 break;
             case 7:
-                $this->setCountry($value);
+                $this->setStreet($value);
                 break;
             case 8:
-                $this->setZipCode($value);
+                $this->setCountry($value);
                 break;
             case 9:
+                $this->setZipCode($value);
+                break;
+            case 10:
                 $this->setTypeId($value);
                 break;
         } // switch()
@@ -1466,22 +1519,25 @@ abstract class Person implements ActiveRecordInterface
             $this->setE-mail($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setPassword($arr[$keys[4]]);
+            $this->setPhoneNumber($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setBirthdate($arr[$keys[5]]);
+            $this->setPassword($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setStreet($arr[$keys[6]]);
+            $this->setBirthdate($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setCountry($arr[$keys[7]]);
+            $this->setStreet($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setZipCode($arr[$keys[8]]);
+            $this->setCountry($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setTypeId($arr[$keys[9]]);
+            $this->setZipCode($arr[$keys[9]]);
+        }
+        if (array_key_exists($keys[10], $arr)) {
+            $this->setTypeId($arr[$keys[10]]);
         }
     }
 
@@ -1535,6 +1591,9 @@ abstract class Person implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PersonTableMap::COL_E-MAIL)) {
             $criteria->add(PersonTableMap::COL_E-MAIL, $this->e-mail);
+        }
+        if ($this->isColumnModified(PersonTableMap::COL_PHONE_NUMBER)) {
+            $criteria->add(PersonTableMap::COL_PHONE_NUMBER, $this->phone_number);
         }
         if ($this->isColumnModified(PersonTableMap::COL_PASSWORD)) {
             $criteria->add(PersonTableMap::COL_PASSWORD, $this->password);
@@ -1644,6 +1703,7 @@ abstract class Person implements ActiveRecordInterface
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setLastname($this->getLastname());
         $copyObj->setE-mail($this->getE-mail());
+        $copyObj->setPhoneNumber($this->getPhoneNumber());
         $copyObj->setPassword($this->getPassword());
         $copyObj->setBirthdate($this->getBirthdate());
         $copyObj->setStreet($this->getStreet());
@@ -2575,6 +2635,7 @@ abstract class Person implements ActiveRecordInterface
         $this->firstname = null;
         $this->lastname = null;
         $this->e-mail = null;
+        $this->phone_number = null;
         $this->password = null;
         $this->birthdate = null;
         $this->street = null;

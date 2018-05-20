@@ -8,8 +8,23 @@
     <body>
         <div class="container">
 			<h1>Packages</h1>
-			Coming soon ...<br/><br/>
-			<a href="../index.php">Back to app menu</a>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Description</th>
+						<th scope="col">Price [€]</th>
+						<th scope="col">Active</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php
+					include 'inc/Read.php';					
+				?>
+				</tbody>
+			</table>
+			<a href="package-form.php">New package</a><a style="margin-left: 50px;" href="../index.php">Back to main menu</a> 
 		</div>
 	</body>
 </html>

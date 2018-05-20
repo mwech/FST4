@@ -59,7 +59,7 @@ class OrderTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class OrderTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the order_id field
@@ -85,6 +85,11 @@ class OrderTableMap extends TableMap
      * the column name for the total_amount field
      */
     const COL_TOTAL_AMOUNT = 'order.total_amount';
+
+    /**
+     * the column name for the status field
+     */
+    const COL_STATUS = 'order.status';
 
     /**
      * the column name for the person_id field
@@ -108,11 +113,11 @@ class OrderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('OrderId', 'Date', 'TotalAmount', 'PersonId', 'VoucherId', ),
-        self::TYPE_CAMELNAME     => array('orderId', 'date', 'totalAmount', 'personId', 'voucherId', ),
-        self::TYPE_COLNAME       => array(OrderTableMap::COL_ORDER_ID, OrderTableMap::COL_DATE, OrderTableMap::COL_TOTAL_AMOUNT, OrderTableMap::COL_PERSON_ID, OrderTableMap::COL_VOUCHER_ID, ),
-        self::TYPE_FIELDNAME     => array('order_id', 'date', 'total_amount', 'person_id', 'voucher_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('OrderId', 'Date', 'TotalAmount', 'Status', 'PersonId', 'VoucherId', ),
+        self::TYPE_CAMELNAME     => array('orderId', 'date', 'totalAmount', 'status', 'personId', 'voucherId', ),
+        self::TYPE_COLNAME       => array(OrderTableMap::COL_ORDER_ID, OrderTableMap::COL_DATE, OrderTableMap::COL_TOTAL_AMOUNT, OrderTableMap::COL_STATUS, OrderTableMap::COL_PERSON_ID, OrderTableMap::COL_VOUCHER_ID, ),
+        self::TYPE_FIELDNAME     => array('order_id', 'date', 'total_amount', 'status', 'person_id', 'voucher_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -122,11 +127,11 @@ class OrderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('OrderId' => 0, 'Date' => 1, 'TotalAmount' => 2, 'PersonId' => 3, 'VoucherId' => 4, ),
-        self::TYPE_CAMELNAME     => array('orderId' => 0, 'date' => 1, 'totalAmount' => 2, 'personId' => 3, 'voucherId' => 4, ),
-        self::TYPE_COLNAME       => array(OrderTableMap::COL_ORDER_ID => 0, OrderTableMap::COL_DATE => 1, OrderTableMap::COL_TOTAL_AMOUNT => 2, OrderTableMap::COL_PERSON_ID => 3, OrderTableMap::COL_VOUCHER_ID => 4, ),
-        self::TYPE_FIELDNAME     => array('order_id' => 0, 'date' => 1, 'total_amount' => 2, 'person_id' => 3, 'voucher_id' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('OrderId' => 0, 'Date' => 1, 'TotalAmount' => 2, 'Status' => 3, 'PersonId' => 4, 'VoucherId' => 5, ),
+        self::TYPE_CAMELNAME     => array('orderId' => 0, 'date' => 1, 'totalAmount' => 2, 'status' => 3, 'personId' => 4, 'voucherId' => 5, ),
+        self::TYPE_COLNAME       => array(OrderTableMap::COL_ORDER_ID => 0, OrderTableMap::COL_DATE => 1, OrderTableMap::COL_TOTAL_AMOUNT => 2, OrderTableMap::COL_STATUS => 3, OrderTableMap::COL_PERSON_ID => 4, OrderTableMap::COL_VOUCHER_ID => 5, ),
+        self::TYPE_FIELDNAME     => array('order_id' => 0, 'date' => 1, 'total_amount' => 2, 'status' => 3, 'person_id' => 4, 'voucher_id' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -149,6 +154,7 @@ class OrderTableMap extends TableMap
         $this->addPrimaryKey('order_id', 'OrderId', 'VARCHAR', true, 36, null);
         $this->addColumn('date', 'Date', 'DATE', false, null, null);
         $this->addColumn('total_amount', 'TotalAmount', 'DOUBLE', false, null, null);
+        $this->addColumn('status', 'Status', 'VARCHAR', false, 15, null);
         $this->addForeignKey('person_id', 'PersonId', 'VARCHAR', 'person', 'person_id', true, 36, null);
         $this->addForeignKey('voucher_id', 'VoucherId', 'VARCHAR', 'voucher', 'voucher_id', true, 36, null);
     } // initialize()
@@ -325,12 +331,14 @@ class OrderTableMap extends TableMap
             $criteria->addSelectColumn(OrderTableMap::COL_ORDER_ID);
             $criteria->addSelectColumn(OrderTableMap::COL_DATE);
             $criteria->addSelectColumn(OrderTableMap::COL_TOTAL_AMOUNT);
+            $criteria->addSelectColumn(OrderTableMap::COL_STATUS);
             $criteria->addSelectColumn(OrderTableMap::COL_PERSON_ID);
             $criteria->addSelectColumn(OrderTableMap::COL_VOUCHER_ID);
         } else {
             $criteria->addSelectColumn($alias . '.order_id');
             $criteria->addSelectColumn($alias . '.date');
             $criteria->addSelectColumn($alias . '.total_amount');
+            $criteria->addSelectColumn($alias . '.status');
             $criteria->addSelectColumn($alias . '.person_id');
             $criteria->addSelectColumn($alias . '.voucher_id');
         }

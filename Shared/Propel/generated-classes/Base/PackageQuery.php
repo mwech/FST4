@@ -23,10 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPackageQuery orderByPackageId($order = Criteria::ASC) Order by the package_id column
  * @method     ChildPackageQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildPackageQuery orderByPrice($order = Criteria::ASC) Order by the price column
+ * @method     ChildPackageQuery orderByPackActive($order = Criteria::ASC) Order by the pack_active column
  *
  * @method     ChildPackageQuery groupByPackageId() Group by the package_id column
  * @method     ChildPackageQuery groupByDescription() Group by the description column
  * @method     ChildPackageQuery groupByPrice() Group by the price column
+ * @method     ChildPackageQuery groupByPackActive() Group by the pack_active column
  *
  * @method     ChildPackageQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPackageQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -53,7 +55,8 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildPackage findOneByPackageId(string $package_id) Return the first ChildPackage filtered by the package_id column
  * @method     ChildPackage findOneByDescription(string $description) Return the first ChildPackage filtered by the description column
- * @method     ChildPackage findOneByPrice(double $price) Return the first ChildPackage filtered by the price column *
+ * @method     ChildPackage findOneByPrice(double $price) Return the first ChildPackage filtered by the price column
+ * @method     ChildPackage findOneByPackActive(string $pack_active) Return the first ChildPackage filtered by the pack_active column *
 
  * @method     ChildPackage requirePk($key, ConnectionInterface $con = null) Return the ChildPackage by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPackage requireOne(ConnectionInterface $con = null) Return the first ChildPackage matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -61,11 +64,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPackage requireOneByPackageId(string $package_id) Return the first ChildPackage filtered by the package_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPackage requireOneByDescription(string $description) Return the first ChildPackage filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPackage requireOneByPrice(double $price) Return the first ChildPackage filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPackage requireOneByPackActive(string $pack_active) Return the first ChildPackage filtered by the pack_active column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPackage[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPackage objects based on current ModelCriteria
  * @method     ChildPackage[]|ObjectCollection findByPackageId(string $package_id) Return ChildPackage objects filtered by the package_id column
  * @method     ChildPackage[]|ObjectCollection findByDescription(string $description) Return ChildPackage objects filtered by the description column
  * @method     ChildPackage[]|ObjectCollection findByPrice(double $price) Return ChildPackage objects filtered by the price column
+ * @method     ChildPackage[]|ObjectCollection findByPackActive(string $pack_active) Return ChildPackage objects filtered by the pack_active column
  * @method     ChildPackage[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -164,7 +169,7 @@ abstract class PackageQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT package_id, description, price FROM package WHERE package_id = :p0';
+        $sql = 'SELECT package_id, description, price, pack_active FROM package WHERE package_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -343,6 +348,31 @@ abstract class PackageQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PackageTableMap::COL_PRICE, $price, $comparison);
+    }
+
+    /**
+     * Filter the query on the pack_active column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPackActive('fooValue');   // WHERE pack_active = 'fooValue'
+     * $query->filterByPackActive('%fooValue%', Criteria::LIKE); // WHERE pack_active LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $packActive The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPackageQuery The current query, for fluid interface
+     */
+    public function filterByPackActive($packActive = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($packActive)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PackageTableMap::COL_PACK_ACTIVE, $packActive, $comparison);
     }
 
     /**

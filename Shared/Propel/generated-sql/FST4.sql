@@ -91,6 +91,7 @@ CREATE TABLE `category`
 (
     `category_id` VARCHAR(36) NOT NULL,
     `description` VARCHAR(45),
+    `cat_active` bit(1),
     PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB;
 
@@ -118,6 +119,7 @@ CREATE TABLE `ingredient`
     `ingredient_id` VARCHAR(36) NOT NULL,
     `description` VARCHAR(45),
     `price` DOUBLE,
+    `ing_available` bit(1),
     PRIMARY KEY (`ingredient_id`)
 ) ENGINE=InnoDB;
 
@@ -152,6 +154,7 @@ CREATE TABLE `order`
     `order_id` VARCHAR(36) NOT NULL,
     `date` DATE,
     `total_amount` DOUBLE,
+    `status` VARCHAR(15),
     `person_id` VARCHAR(36) NOT NULL,
     `voucher_id` VARCHAR(36) NOT NULL,
     PRIMARY KEY (`order_id`),
@@ -176,7 +179,6 @@ CREATE TABLE `order_has_articles`
     `order_id` VARCHAR(36) NOT NULL,
     `article_id` VARCHAR(36) NOT NULL,
     `amount` INTEGER,
-    `price` DOUBLE,
     PRIMARY KEY (`order_id`,`article_id`),
     INDEX `fk_order_has_articles_article1_idx` (`article_id`),
     CONSTRAINT `fk_order_has_articles_article1`
@@ -198,6 +200,7 @@ CREATE TABLE `package`
     `package_id` VARCHAR(36) NOT NULL,
     `description` VARCHAR(45),
     `price` DOUBLE,
+    `pack_active` bit(1),
     PRIMARY KEY (`package_id`)
 ) ENGINE=InnoDB;
 
@@ -233,6 +236,7 @@ CREATE TABLE `person`
     `firstname` VARCHAR(45),
     `lastname` VARCHAR(45),
     `e-mail` VARCHAR(45),
+    `phone_number` VARCHAR(15),
     `password` VARCHAR(45),
     `birthdate` VARCHAR(45),
     `street` VARCHAR(45),
@@ -286,6 +290,24 @@ CREATE TABLE `shape`
     `shape_id` VARCHAR(36) NOT NULL,
     `description` VARCHAR(45),
     PRIMARY KEY (`shape_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- simeontest
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `simeontest`;
+
+CREATE TABLE `simeontest`
+(
+    `id` VARCHAR(36) NOT NULL,
+    `startdate` DATE NOT NULL,
+    `amount` INTEGER NOT NULL,
+    `price` DOUBLE NOT NULL,
+    `used` binary(1) NOT NULL,
+    `visible` binary(1) NOT NULL,
+    `description` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

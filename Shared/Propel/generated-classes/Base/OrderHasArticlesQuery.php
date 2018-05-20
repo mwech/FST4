@@ -23,12 +23,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrderHasArticlesQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildOrderHasArticlesQuery orderByArticleId($order = Criteria::ASC) Order by the article_id column
  * @method     ChildOrderHasArticlesQuery orderByAmount($order = Criteria::ASC) Order by the amount column
- * @method     ChildOrderHasArticlesQuery orderByPrice($order = Criteria::ASC) Order by the price column
  *
  * @method     ChildOrderHasArticlesQuery groupByOrderId() Group by the order_id column
  * @method     ChildOrderHasArticlesQuery groupByArticleId() Group by the article_id column
  * @method     ChildOrderHasArticlesQuery groupByAmount() Group by the amount column
- * @method     ChildOrderHasArticlesQuery groupByPrice() Group by the price column
  *
  * @method     ChildOrderHasArticlesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildOrderHasArticlesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -65,8 +63,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildOrderHasArticles findOneByOrderId(string $order_id) Return the first ChildOrderHasArticles filtered by the order_id column
  * @method     ChildOrderHasArticles findOneByArticleId(string $article_id) Return the first ChildOrderHasArticles filtered by the article_id column
- * @method     ChildOrderHasArticles findOneByAmount(int $amount) Return the first ChildOrderHasArticles filtered by the amount column
- * @method     ChildOrderHasArticles findOneByPrice(double $price) Return the first ChildOrderHasArticles filtered by the price column *
+ * @method     ChildOrderHasArticles findOneByAmount(int $amount) Return the first ChildOrderHasArticles filtered by the amount column *
 
  * @method     ChildOrderHasArticles requirePk($key, ConnectionInterface $con = null) Return the ChildOrderHasArticles by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrderHasArticles requireOne(ConnectionInterface $con = null) Return the first ChildOrderHasArticles matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -74,13 +71,11 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrderHasArticles requireOneByOrderId(string $order_id) Return the first ChildOrderHasArticles filtered by the order_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrderHasArticles requireOneByArticleId(string $article_id) Return the first ChildOrderHasArticles filtered by the article_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOrderHasArticles requireOneByAmount(int $amount) Return the first ChildOrderHasArticles filtered by the amount column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOrderHasArticles requireOneByPrice(double $price) Return the first ChildOrderHasArticles filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildOrderHasArticles[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildOrderHasArticles objects based on current ModelCriteria
  * @method     ChildOrderHasArticles[]|ObjectCollection findByOrderId(string $order_id) Return ChildOrderHasArticles objects filtered by the order_id column
  * @method     ChildOrderHasArticles[]|ObjectCollection findByArticleId(string $article_id) Return ChildOrderHasArticles objects filtered by the article_id column
  * @method     ChildOrderHasArticles[]|ObjectCollection findByAmount(int $amount) Return ChildOrderHasArticles objects filtered by the amount column
- * @method     ChildOrderHasArticles[]|ObjectCollection findByPrice(double $price) Return ChildOrderHasArticles objects filtered by the price column
  * @method     ChildOrderHasArticles[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -179,7 +174,7 @@ abstract class OrderHasArticlesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT order_id, article_id, amount, price FROM order_has_articles WHERE order_id = :p0 AND article_id = :p1';
+        $sql = 'SELECT order_id, article_id, amount FROM order_has_articles WHERE order_id = :p0 AND article_id = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_STR);
@@ -370,47 +365,6 @@ abstract class OrderHasArticlesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderHasArticlesTableMap::COL_AMOUNT, $amount, $comparison);
-    }
-
-    /**
-     * Filter the query on the price column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPrice(1234); // WHERE price = 1234
-     * $query->filterByPrice(array(12, 34)); // WHERE price IN (12, 34)
-     * $query->filterByPrice(array('min' => 12)); // WHERE price > 12
-     * </code>
-     *
-     * @param     mixed $price The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildOrderHasArticlesQuery The current query, for fluid interface
-     */
-    public function filterByPrice($price = null, $comparison = null)
-    {
-        if (is_array($price)) {
-            $useMinMax = false;
-            if (isset($price['min'])) {
-                $this->addUsingAlias(OrderHasArticlesTableMap::COL_PRICE, $price['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($price['max'])) {
-                $this->addUsingAlias(OrderHasArticlesTableMap::COL_PRICE, $price['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(OrderHasArticlesTableMap::COL_PRICE, $price, $comparison);
     }
 
     /**

@@ -65,6 +65,7 @@
   <table name="category" idMethod="native" phpName="Category">
     <column name="category_id" phpName="CategoryId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="45"/>
+    <column name="cat_active" phpName="CatActive" type="VARCHAR" size="1" sqlType="bit(1)"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -80,6 +81,7 @@
     <column name="ingredient_id" phpName="IngredientId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="45"/>
     <column name="price" phpName="Price" type="DOUBLE"/>
+    <column name="ing_available" phpName="IngAvailable" type="VARCHAR" size="1" sqlType="bit(1)"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -104,6 +106,7 @@
     <column name="order_id" phpName="OrderId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="date" phpName="Date" type="DATE"/>
     <column name="total_amount" phpName="TotalAmount" type="DOUBLE"/>
+    <column name="status" phpName="Status" type="VARCHAR" size="15"/>
     <column name="person_id" phpName="PersonId" type="VARCHAR" size="36" required="true"/>
     <column name="voucher_id" phpName="VoucherId" type="VARCHAR" size="36" required="true"/>
     <foreign-key foreignTable="person" name="fk_order_person1">
@@ -126,7 +129,6 @@
     <column name="order_id" phpName="OrderId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="article_id" phpName="ArticleId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="amount" phpName="Amount" type="INTEGER"/>
-    <column name="price" phpName="Price" type="DOUBLE"/>
     <foreign-key foreignTable="article" name="fk_order_has_articles_article1">
       <reference local="article_id" foreign="article_id"/>
     </foreign-key>
@@ -144,6 +146,7 @@
     <column name="package_id" phpName="PackageId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="45"/>
     <column name="price" phpName="Price" type="DOUBLE"/>
+    <column name="pack_active" phpName="PackActive" type="VARCHAR" size="1" sqlType="bit(1)"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -169,6 +172,7 @@
     <column name="firstname" phpName="Firstname" type="VARCHAR" size="45"/>
     <column name="lastname" phpName="Lastname" type="VARCHAR" size="45"/>
     <column name="e-mail" phpName="E-mail" type="VARCHAR" size="45"/>
+    <column name="phone_number" phpName="PhoneNumber" type="VARCHAR" size="15"/>
     <column name="password" phpName="Password" type="VARCHAR" size="45"/>
     <column name="birthdate" phpName="Birthdate" type="VARCHAR" size="45"/>
     <column name="street" phpName="Street" type="VARCHAR" size="45"/>
@@ -219,6 +223,18 @@
   <table name="shape" idMethod="native" phpName="Shape">
     <column name="shape_id" phpName="ShapeId" type="VARCHAR" size="36" primaryKey="true" required="true"/>
     <column name="description" phpName="Description" type="VARCHAR" size="45"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="simeontest" idMethod="native" phpName="Simeontest">
+    <column name="id" phpName="Id" type="VARCHAR" size="36" primaryKey="true" required="true"/>
+    <column name="startdate" phpName="Startdate" type="DATE" required="true"/>
+    <column name="amount" phpName="Amount" type="INTEGER" required="true"/>
+    <column name="price" phpName="Price" type="DOUBLE" required="true"/>
+    <column name="used" phpName="Used" type="VARCHAR" size="1" sqlType="binary(1)" required="true"/>
+    <column name="visible" phpName="Visible" type="VARCHAR" size="1" sqlType="binary(1)" required="true"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="50" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
