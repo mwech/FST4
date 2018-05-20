@@ -8,11 +8,20 @@ use Propel\Runtime\Propel;
 
 
 if(isset($_POST['description'])&& isset($_POST['price'])){
+	
+	$packageid = guidv4();
 
-	$sql = "INSERT INTO package VALUES('".guidv4()."','".$_POST['description']."',".$_POST['price'].",".$_POST['active'].");";
+	$sql = "INSERT INTO package VALUES('".$packageid."','".$_POST['description']."',".$_POST['price'].",".$_POST['active'].");";
 	$conn = Propel::getConnection();
 	$st = $conn->prepare($sql);
 	$st->execute();
+	
+	foreach($_POST['articles'] as $article){
+		$pa = new PackageHasArticles();
+		$pa->setPackageId($packageid);
+		$pa->setArticleId($article);
+		$pa->save();
+	}
 }
 header("Location: ../package-site.php");
 exit();

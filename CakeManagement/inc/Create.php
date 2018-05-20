@@ -7,8 +7,11 @@ require_once '../../Shared/GuidGenerator.php';
 use Propel\Runtime\Propel;
 
 if(isset($_POST['description']) && isset($_POST['price'])){
+	
+	$cakeid = guidv4();
+	
 	$cake = new Article();
-	$cake->setArticleId(guidv4());
+	$cake->setArticleId($cakeid);
 	$cake->setDescription($_POST['description']);
 	$cake->setPrice($_POST['price']);
 	$cake->setVisible($_POST['visible']);
@@ -21,6 +24,14 @@ if(isset($_POST['description']) && isset($_POST['price'])){
 	$cake->setArticleTypeId($articleType->getArticleTypeId());
 	
 	$cake->save(); 
+	
+	foreach($_POST['ingredients'] as $ingredient){
+		$ai = new ArticleHasIngredient();
+		$ai->setArticleId($cakeid);
+		$ai->setIngredientId($ingredient);
+		$ai->setAmount(null);
+		$ai->save();
+	}
 }
 
 header("Location: ../cake-site.php");

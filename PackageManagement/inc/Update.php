@@ -16,6 +16,21 @@ if(isset($_POST['description']) && isset($_POST['price'])&& isset($_POST['update
 	$conn = Propel::getConnection();
 	$st = $conn->prepare($sql);
 	$st->execute();
+	
+	$packages = PackageHasArticlesQuery::create()
+					->filterByPackageId($_POST['updateid'])
+					->find();
+	foreach($packages as $package){
+		$package->delete();
+	}
+	
+	foreach($_POST['articles'] as $article){
+		$pa = new PackageHasArticles();
+		$pa->setPackageId($_POST['updateid']);
+		$pa->setArticleId($article);
+		$pa->save();
+	}
+	
 	header("Location: ../package-site.php");
 	exit();
 }

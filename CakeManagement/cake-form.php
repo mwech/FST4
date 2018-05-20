@@ -82,6 +82,32 @@ error_reporting(E_ALL);
 					</div>
 				</div>
 				<div class="form-group">
+					<div class="col-sm-3">
+						<label for="ingredients[]" class="control-label">Ingredients</label>
+					</div>
+					<div class="col-sm-10">
+					<?php
+						$ingredients = IngredientQuery::create()->find();
+						foreach($ingredients as $ingredient) {
+					?>
+						<label class="checkbox-inline"><input type="checkbox" name="ingredients[]" value="<?php echo $ingredient->getIngredientId();?>" 
+						<?php 
+						//check if ingredient is in article
+							if(isset($_GET["id"])){
+								$articles = ArticleHasIngredientQuery::create()
+								  ->filterByArticleId($_GET["id"])
+								  ->find();
+								foreach($articles as $article){
+									if($article->getIngredientId() == $ingredient->getIngredientId()) echo "checked";
+								} 
+							}
+						?>> <?php echo $ingredient->getDescription(); ?> </label>
+					<?php
+						}
+					?>
+					</div>
+				</div>
+				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button type="submit" name="submit" class="btn btn-default">Submit</button>
 					</div>

@@ -51,6 +51,32 @@ require_once '../Shared/Propel/generated-conf/config.php';
 					</div>
 				</div>
 				<div class="form-group">
+					<div class="col-sm-3">
+						<label for="articles[]" class="control-label">Articles</label>
+					</div>
+					<div class="col-sm-10">
+					<?php
+						$articles = ArticleQuery::create()->find();
+						foreach($articles as $article) {
+					?>
+						<label class="checkbox-inline"><input type="checkbox" name="articles[]" value="<?php echo $article->getArticleId();?>" 
+						<?php 
+						//check if article is in package
+							if(isset($_GET["id"])){
+								$packages = PackageHasArticlesQuery::create()
+								  ->filterByPackageId($_GET["id"])
+								  ->find();
+								foreach($packages as $package){
+									if($package->getArticleId() == $article->getArticleId()) echo "checked";
+								} 
+							}
+						?>> <?php echo $article->getDescription(); ?> </label>
+					<?php
+						}
+					?>
+					</div>
+				</div>
+				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button type="submit" name="submit" class="btn btn-default">Submit</button>
 					</div>
@@ -61,21 +87,3 @@ require_once '../Shared/Propel/generated-conf/config.php';
 		</div>
 	</body>
 </html>
-
-
-
-
-<?php
-/*
-<select name="ingredients" multiple>
-<?php
-$ingredients = IngredientQuery::create()->find();
-foreach($ingredients as $ingredient) {
-?>
-<option value="<?php echo $ingredient->getIngredientId(); ?>" <?php if(isset($_GET["id"])){ } ?>><?php echo utf8_encode($ingredient->getDescription());?></option>
-<?php
-}
-?>
-</select>
-*/
-?>

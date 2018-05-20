@@ -12,6 +12,22 @@ if(isset($_POST['description']) && isset($_POST['price'])&& isset($_POST['update
 	$cake->setCreation($_POST['creation']);
 	$cake->setShapeId($_POST['shape']);
 	$cake->save();
+	
+	$articles = ArticleHasIngredientQuery::create()
+					->filterByArticleId($_POST['updateid'])
+					->find();
+	foreach($articles as $article){
+		$article->delete();
+	}
+	
+	foreach($_POST['ingredients'] as $ingredient){
+		$ai = new ArticleHasIngredient();
+		$ai->setArticleId($_POST['updateid']);
+		$ai->setIngredientId($ingredient);
+		$ai->setAmount(null);
+		$ai->save();
+	}
+	
 	header("Location: ../cake-site.php");
 	exit();
 }
